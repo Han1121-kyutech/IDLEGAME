@@ -45,11 +45,11 @@ function handleAttack() {
   if (Heros[0].hp > 0 && currentEnemys.hp > 0) {
     const result = attack(Heros[0], currentEnemys);
     if (result) {
-      attack(currentEnemys, Heros[0]);
       renderAll();
       EnemysLose();
       HerosLose();
     }
+    attack(currentEnemys, Heros[0]);
   }
 }
 
