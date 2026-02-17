@@ -1,0 +1,42 @@
+<!-- HTMLを使いますよ宣言 -->
+<!doctype html>
+<!-- <html>HTML全部の入れ物 -->
+<html>
+  <!-- <head>ページ設定の場所、画面には表示されない -->
+  <head>
+    <!-- <title>ブラウザタブに表示される名前 -->
+    <title>IdleGame</title>
+  </head>
+  <!-- <body>画面に表示される内容を書く場所 -->
+  <body>
+    <h1>Idle Game</h1>
+    <!-- <div>1つの情報についてまとめた入れ物 -->
+    <!-- ステータス表示 -->
+    <div id="gold_status"></div>
+    <div id="allstatus" style="display: flex; gap: 50px">
+      <!-- 勇者たちのステータス表示 -->
+      <div id="heros_status"></div>
+      <!-- 敵のステータス表示 -->
+      <div id="enemys_status"></div>
+    </div>
+    <!-- 攻撃ボタン -->
+    <button id="attack_Btn">攻撃！</button>
+    <button id="escape_Btn">無様に逃げる！</button>
+    <button id="reset_Btn">やり直す</button>
+    <button id="shop_Btn">ショップ</button>
+    <div id="shop_area" style="display: none">
+      <h3>ショップ</h3>
+      <button id="atk_upgrade">攻撃力+1 (50G)</button>
+      <button id="def_upgrade">防御力+1 (50G)</button>
+    </div>
+
+    <!-- JavaScriptファイルから読み書きするためのタグ -->
+    <script src="Javascripts/GameSystem.js" defer></script>
+    <script src="Javascripts/SummonMonster.js" defer></script>
+    <script src="Javascripts/Battle.js" defer></script>
+    <script src="Javascripts/LoseSystem.js" defer></script>
+    <script src="Javascripts/XPSystem.js" defer></script>
+    <script src = "Javascripts/ShopSystem.js" defer></script>
+    <script src="Javascripts/main.js" defer></scripts>
+  </body>
+</html>
