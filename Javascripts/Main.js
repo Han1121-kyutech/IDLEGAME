@@ -1,10 +1,28 @@
+// GameSystem.js      → データ定義
+// Battle.js          → 戦闘ロジックのみ
+// LoseSystem.js      → 勝敗判定のみ
+// ShopSystem.js      → 強化のみ
+// SummonMonster.js   → 敵生成のみ
+// XPSystem.js        → レベル処理のみ
+// Main.js            → UIとイベント管理のみ
+
 function initGame() {
   HerosCharactersStatus(Heros, "heros_status");
   summonEnemys();
   setupEventListeners();
   renderAll();
+  updateGold();
 }
 
+function processTurn() {
+  if (currentEnemys.hp <= 0) {
+    EnemysLose();
+  }
+
+  if (Heros[0].hp <= 0) {
+    HerosLose();
+  }
+}
 // shop
 const shopBtn = document.getElementById("shop_Btn");
 const shopArea = document.getElementById("shop_area");
@@ -17,11 +35,15 @@ const atkUpgradeBtn = document.getElementById("atk_upgrade");
 const defUpgradeBtn = document.getElementById("def_upgrade");
 
 atkUpgradeBtn.addEventListener("click", () => {
-  handleUpgrade("atk");
+  if (Heros[0].hp > 0) {
+    handleUpgrade("atk");
+  } else alert("いや、あんた死んでるやないかい");
 });
 
 defUpgradeBtn.addEventListener("click", () => {
-  handleUpgrade("def");
+  if (Heros[0].hp > 0) {
+    handleUpgrade("def");
+  } else alert("いや、あんた死んでるやないかい");
 });
 
 function handleUpgrade(type) {
@@ -42,33 +64,41 @@ function setupEventListeners() {
 }
 
 function handleAttack() {
-  if (Heros[0].hp > 0 && currentEnemys.hp > 0) {
-    const result = attack(Heros[0], currentEnemys);
-    if (result) {
-      renderAll();
-      EnemysLose();
-      HerosLose();
-    }
+  if (Heros[0].hp <= 0 || currentEnemys.hp <= 0) return;
+
+  const result = attack(Heros[0], currentEnemys);
+  if (!result) {
     attack(currentEnemys, Heros[0]);
   }
+  processTurn();
+  renderAll();
 }
 
 function handleEscape() {
-  summonEnemys();
+  if (Heros[0].hp > 0) {
+    alert("勇者は無様に逃げた。");
+    summonEnemys();
+  }
+}
+
+class HerosStatus {
+  constructor(data) {
+    this.name = data.name;
+    this.level = data.level;
+    this.hp = data.hp;
+    this.maxHp = data.hp;
+    this.atk = data.atk;
+    this.def = data.def;
+    this.xp = data.xp * 100;
+  }
 }
 
 function createInitialHero() {
-  return new HerosStatus(
-    initialHeroData.name,
-    initialHeroData.level,
-    initialHeroData.hp,
-    initialHeroData.atk,
-    initialHeroData.def,
-    initialHeroData.xp,
-  );
+  return new HerosStatus(initialHeroData);
 }
+
 function resetGame() {
-  Heros[0] = createInitialHero();
+  Heros[0] = new CharacterStatus("勇者", 1, 100, 100, 0, 2);
   gameState.gold = 0;
   summonEnemys();
   renderAll();
@@ -89,7 +119,11 @@ function updateGold() {
 
 function renderAll() {
   HerosCharactersStatus(Heros, "heros_status");
-  EnemysCharactersStatus([currentEnemys], "enemys_status");
+
+  if (currentEnemys) {
+    EnemysCharactersStatus([currentEnemys], "enemys_status");
+  }
+
   updateGold();
 }
 

@@ -1,18 +1,17 @@
+// バトルだけ
 // 攻撃関数(敵・味方併用可)
 function attack(attacker, target) {
-  if (attacker.atk - target.def <= 0) {
-    alert(attacker.name + "の攻撃は" + target.name + "の防御力に弾かれた!");
-    return false;
-  } else {
-    target.hp -= attacker.atk - target.def;
-    if (target.hp < 0) {
-      target.hp = 0;
-    }
-  }
+  const damage = attacker.atk - target.def;
 
-  // 表示更新関数
-  gameState.gold += currentEnemys.gold;
-  renderAll();
+  if (damage <= 0) {
+    alert(attacker.name + "の攻撃は、雑魚過ぎて" + target.name + "に弾かれた!");
+    return false;
+  }
+  target.hp -= damage;
+  if (target.hp < 0) {
+    target.hp = 0;
+    return true;
+  }
 }
 
 // // 攻撃ボタン設定

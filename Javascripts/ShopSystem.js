@@ -3,10 +3,14 @@ const upgrades = {
   def: { cost: 40, effect: () => Heros[0].def++ },
 };
 
-function status_upgrade() {
-  const cost = upgrades[type];
+function status_upgrade(type) {
+  const upgrade = upgrades[type];
 
-  if (gameState.gold < cost) {
+  if (!upgrade) {
+    return { success: false, message: "まだ実装してないねん。" };
+  }
+
+  if (gameState.gold < upgrade.cost) {
     return { success: false, message: "お金が足りません。出直してこい。" };
   }
 
