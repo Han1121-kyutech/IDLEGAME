@@ -66,7 +66,6 @@ function setupEventListeners() {
 function handleAttack() {
   if (Heros[0].hp <= 0 || currentEnemys.hp <= 0) {
     alert("死んでるくせに攻撃しようとするな");
-    return;
   }
 
   const result = attack(Heros[0], currentEnemys);
